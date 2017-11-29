@@ -18,6 +18,7 @@ class EnemyGen extends Component {
 	  <div className="EnemyGen">
       <h1>EnmyGen Page!!!</h1>
        <Dice/>
+       
      </div>
    );
  }

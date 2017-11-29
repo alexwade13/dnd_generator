@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Chart from './Chart'
 
 class Dice extends Component {
   constructor(props){
@@ -6,7 +7,8 @@ class Dice extends Component {
     this.state = {
         sides:0,
         number:0,
-        rolled:0
+        rolled:0,
+        outcomes:{}
     }
   }
 
@@ -15,25 +17,28 @@ class Dice extends Component {
   }
 
   setSides(event){
-    this.setState({sides:event.target.value})
+    this.setState({sides:event.target.value, outcomes:{}})
     
   }
 
   setNumber(event){
-    this.setState({number:event.target.value})
+    this.setState({number:event.target.value,outcomes:{}})
   }
 
   roll(){
-    var {sides, number} = this.state
+    var {sides, number,outcomes} = this.state
     var rolled = 0
+
     for(var i=0; i < number; i++) {
-        rolled += Math.floor(Math.random()*sides) + 1
+        rolled += Math.ceil(Math.random()*sides) 
     }
-    this.setState({rolled:rolled})
+
+    outcomes[rolled] = outcomes[rolled] === undefined ? {name: rolled.toString(), value: 1} : {name: rolled.toString(), value: outcomes[rolled]["value"] + 1} 
+    this.setState({rolled:rolled, outcomes:outcomes})
   }
 
   render() {
-    var {sides, number,rolled} = this.state
+    var {sides, number, rolled, outcomes} = this.state
     
     
     console.log(sides, number)
@@ -44,6 +49,7 @@ class Dice extends Component {
        <input type="number" onChange={this.setNumber.bind(this)} value={number}></input>
        <span>{rolled}</span>
        <button onClick={this.roll.bind(this)}>ROLL IT</button>
+       <Chart data={outcomes}/>
      </div>
    );
  }
